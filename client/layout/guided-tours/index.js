@@ -12,6 +12,7 @@ import { localize } from 'i18n-calypso';
 import scrollTo from 'lib/scroll-to';
 import { getGuidedTourState } from 'state/ui/guided-tours/selectors';
 import { nextGuidedTourStep, quitGuidedTour } from 'state/ui/guided-tours/actions';
+import { isSectionLoading } from 'state/ui/selectors';
 import { errorNotice } from 'state/notices/actions';
 import { getScrollableSidebar, targetForSlug } from './positioning';
 import {
@@ -102,12 +103,13 @@ class GuidedTours extends Component {
 	}
 
 	render() {
-		const { stepConfig } = this.props.tourState;
-		debug( 'GuidedTours#render() tourState', this.props.tourState );
+		const { stepConfig, shouldShow, sectionLoading } = this.props.tourState;
 
-		if ( ! stepConfig ) {
+		if ( ! shouldShow || ! stepConfig || sectionLoading ) {
 			return null;
 		}
+
+		debug( 'GuidedTours#render() tourState', this.props.tourState );
 
 		const StepComponent = {
 			FirstStep,
@@ -135,6 +137,8 @@ class GuidedTours extends Component {
 
 export default connect( ( state ) => ( {
 	tourState: getGuidedTourState( state ),
+	sectionLoading: isSectionLoading( state ),
+	state,
 } ), {
 	nextGuidedTourStep,
 	quitGuidedTour,

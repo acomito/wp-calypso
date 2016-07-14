@@ -193,7 +193,6 @@ export const getGuidedTourState = createSelector(
 		const nextStepConfig = getStepConfig( state, tourConfig, stepConfig.next ) || false;
 
 		const shouldShow = !! (
-			! isSectionLoading( state ) &&
 			shouldReallyShow
 		);
 
