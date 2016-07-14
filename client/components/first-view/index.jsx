@@ -16,6 +16,7 @@ import RootChild from 'components/root-child';
 import { getSectionName } from 'state/ui/selectors';
 import { shouldViewBeVisible } from 'state/ui/first-view/selectors';
 import { hideView } from 'state/ui/first-view/actions';
+import QueryPreferences from 'components/data/query-preferences';
 
 // component to avoid having a wrapper element for the transition
 // see: https://facebook.github.io/react/docs/animation.html#rendering-a-single-child
@@ -54,6 +55,7 @@ const FirstView = React.createClass( {
 
 		return (
 			<RootChild className={ classes }>
+				<QueryPreferences />
 				<ReactCSSTransitionGroup transitionName="first-view-transition"
 						component={ TransitionGroupComponent }
 						transitionEnter={ false } transitionEnterTimeout={ 0 }
