@@ -18,7 +18,7 @@ import { USER_SETTING_KEY } from './constants';
 export function fetchPreferences() {
 	return ( dispatch ) => {
 		dispatch( { type: PREFERENCES_FETCH } );
-		return wpcom.me().settings().get()
+		return wpcom.skipLocalSyncResult().me().settings().get()
 		.then( data => dispatch( {
 			type: PREFERENCES_FETCH_SUCCESS,
 			data
