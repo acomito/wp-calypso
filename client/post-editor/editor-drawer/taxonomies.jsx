@@ -18,7 +18,7 @@ import Gridicon from 'components/gridicon';
 import TermTokenField from 'post-editor/term-token-field';
 import TermSelector from 'post-editor/editor-term-selector';
 
-function EditorDrawerTaxonomies( { siteId, postType, postTerms, taxonomies } ) {
+function EditorDrawerTaxonomies( { siteId, postType, taxonomies } ) {
 	return (
 		<div className="editor-drawer__taxonomies">
 			{ siteId && postType && (
