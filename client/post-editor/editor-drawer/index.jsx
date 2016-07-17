@@ -112,14 +112,10 @@ const EditorDrawer = React.createClass( {
 	},
 
 	renderTaxonomies: function() {
-		var element;
-
 		if ( config.isEnabled( 'manage/custom-post-types' ) &&
 				! includes( [ 'post', 'page' ], this.props.type ) ) {
 			return (
-				<EditorDrawerTaxonomies
-					postTerms={ this.props.post && this.props.post.terms }
-				/>
+				<EditorDrawerTaxonomies />
 			);
 		}
 
@@ -127,7 +123,7 @@ const EditorDrawer = React.createClass( {
 			return;
 		}
 
-		element = (
+		let element = (
 			<CategoriesTagsAccordion
 				site={ this.props.site }
 				post={ this.props.post } />

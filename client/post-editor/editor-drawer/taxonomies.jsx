@@ -40,7 +40,7 @@ function EditorDrawerTaxonomies( { siteId, postType, postTerms, taxonomies } ) {
 						icon={ <Gridicon icon={ icon } /> }
 					>
 					{ hierarchical
-						? <TermSelector postTerms={ postTerms } taxonomyName={ name } />
+						? <TermSelector taxonomyName={ name } />
 						: <TermTokenField taxonomyName={ name } />
 					}
 					</Accordion>
@@ -53,7 +53,6 @@ function EditorDrawerTaxonomies( { siteId, postType, postTerms, taxonomies } ) {
 EditorDrawerTaxonomies.propTypes = {
 	siteId: PropTypes.number,
 	postType: PropTypes.string,
-	postTerms: PropTypes.object,
 	taxonomies: PropTypes.array,
 };
 
