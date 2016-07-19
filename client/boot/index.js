@@ -51,6 +51,7 @@ var config = require( 'config' ),
 	supportUser = require( 'lib/user/support-user-interop' ),
 	isSectionIsomorphic = require( 'state/ui/selectors' ).isSectionIsomorphic,
 	createReduxStoreFromPersistedInitialState = require( 'state/initial-state' ).default,
+	fetchPreferences = require( 'state/preferences/actions' ).fetchPreferences,
 	// The following components require the i18n mixin, so must be required after i18n is initialized
 	Layout;
 
@@ -207,6 +208,9 @@ function reduxStoreReady( reduxStore ) {
 		reduxStore.dispatch( setCurrentUserId( user.get().ID ) );
 		reduxStore.dispatch( setCurrentUserFlags( user.get().meta.data.flags.active_flags ) );
 
+		// Kick off the fetching of preferences early so that hopefully they will
+		// have loaded before they are needed by anything (such as FirstView)
+		reduxStore.dispatch( fetchPreferences() );
 
 		const participantInPushNotificationsAbTest = config.isEnabled('push-notifications-ab-test') && abtest('browserNotifications') === 'enabled';
 		if ( config.isEnabled( 'push-notifications' ) || participantInPushNotificationsAbTest ) {
