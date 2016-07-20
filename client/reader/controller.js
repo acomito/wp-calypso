@@ -202,6 +202,11 @@ module.exports = {
 		next();
 	},
 
+	unmountSidebar: function( context, next ) {
+		ReactDom.unmountComponentAtNode( document.getElementById( 'secondary' ) );
+		next();
+	},
+
 	following: function( context ) {
 		var FollowingComponent = require( 'reader/following/main' ),
 			basePath = route.sectionify( context.path ),
@@ -322,7 +327,7 @@ module.exports = {
 		);
 	},
 
-	feedPost: function( context ) {
+	feedPostOld: function( context ) {
 		var FullPostDialog = require( 'reader/full-post' ),
 			feedId = context.params.feed,
 			postId = context.params.post,
@@ -353,6 +358,39 @@ module.exports = {
 		);
 	},
 
+	feedPost: function( context ) {
+		var FullPostDialog = require( 'components/reader-full-post' ),
+			feedId = context.params.feed,
+			postId = context.params.post,
+			basePath = '/read/feeds/:feed_id/posts/:feed_item_id',
+			fullPageTitle = analyticsPageTitle + ' > Feed Post > ' + feedId + ' > ' + postId;
+
+		__lastTitle = TitleStore.getState().title;
+
+		trackPageLoad( basePath, fullPageTitle, 'full_post' );
+
+		ReactDom.render(
+			React.createElement( ReduxProvider, { store: context.store },
+				React.createElement( FullPostDialog, {
+					feedId: feedId,
+					postId: postId,
+					setPageTitle: setPageTitle,
+					onClose: function() {
+						page.back( context.lastRoute || '/' );
+					},
+					onClosed: removeFullPostDialog,
+					onPostNotFound: renderPostNotFound
+				} )
+			),
+			document.getElementById( 'primary' )
+		);
+		defer( function() {
+			if ( typeof window !== 'undefined' ) {
+				window.scrollTo( 0, 0 );
+			}
+		} );
+	},
+
 	resetTitle: function( context, next ) {
 		if ( __lastTitle ) {
 			titleActions.setTitle( __lastTitle );
@@ -361,7 +399,7 @@ module.exports = {
 		next();
 	},
 
-	blogPost: function( context ) {
+	blogPostOld: function( context ) {
 		var FullPostDialog = require( 'reader/full-post' ),
 			blogId = context.params.blog,
 			postId = context.params.post,
@@ -390,6 +428,40 @@ module.exports = {
 			),
 			document.getElementById( 'tertiary' )
 		);
+	},
+
+	blogPost: function( context ) {
+		var FullPostDialog = require( 'components/reader-full-post' ),
+			blogId = context.params.blog,
+			postId = context.params.post,
+			basePath = '/read/blogs/:blog_id/posts/:post_id',
+			fullPageTitle = analyticsPageTitle + ' > Blog Post > ' + blogId + ' > ' + postId;
+
+		__lastTitle = TitleStore.getState().title;
+
+		trackPageLoad( basePath, fullPageTitle, 'full_post' );
+
+		ReactDom.render(
+			React.createElement( ReduxProvider, { store: context.store },
+				React.createElement( FullPostDialog, {
+					blogId: blogId,
+					postId: postId,
+					context: context,
+					setPageTitle: setPageTitle,
+					onClose: function() {
+						page.back( context.lastRoute || '/' );
+					},
+					onClosed: removeFullPostDialog,
+					onPostNotFound: renderPostNotFound
+				} )
+			),
+			document.getElementById( 'primary' )
+		);
+		defer( function() {
+			if ( typeof window !== 'undefined' ) {
+				window.scrollTo( 0, 0 );
+			}
+		} );
 	},
 
 	removePost: function( context, next ) {
