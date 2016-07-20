@@ -31,6 +31,7 @@ var MasterbarLoggedIn = require( 'layout/masterbar/logged-in' ),
 	SitesListNotices = require( 'lib/sites-list/notices' ),
 	OfflineStatus = require( 'layout/offline-status' ),
 	PollerPool = require( 'lib/data-poller' ),
+	QueryPreferences = require( 'components/data/query-preferences' ),
 	KeyboardShortcutsMenu,
 	Layout,
 	SupportUser;
@@ -179,6 +180,7 @@ Layout = React.createClass( {
 
 		return (
 			<div className={ sectionClass }>
+				<QueryPreferences />
 				{ config.isEnabled( 'guided-tours' ) && this.props.tourState.shouldShow ? <GuidedTours /> : null }
 				{ config.isEnabled( 'keyboard-shortcuts' ) ? <KeyboardShortcutsMenu /> : null }
 				{ this.renderMasterbar() }
