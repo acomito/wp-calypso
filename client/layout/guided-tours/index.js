@@ -152,6 +152,7 @@ class GuidedTours extends Component {
 
 export default connect( ( state ) => ( {
 	tourState: getGuidedTourState( state ),
+	state,
 } ), {
 	nextGuidedTourStep,
 	quitGuidedTour,
